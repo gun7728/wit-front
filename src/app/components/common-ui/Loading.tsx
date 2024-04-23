@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {useLoadingStore} from "../../store/loading";
+import { useLoadingStore } from '../../../store/loading';
 
 interface SpinnerWrapperProps {
   $loading: boolean;
@@ -12,7 +12,7 @@ const SpinnerWrapper = styled.div<SpinnerWrapperProps>`
   display: ${(props) => (props.$loading ? 'flex' : 'none')};
   justify-content: center;
   align-items: center;
-  background-color: rgba(0,0,0,0.3);
+  background-color: rgba(0, 0, 0, 0.3);
   width: 100%;
   height: 100vh;
 `;
