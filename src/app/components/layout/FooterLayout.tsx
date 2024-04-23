@@ -33,6 +33,7 @@ const FooterButton = styled.div`
   align-items: center;
   background-color: white;
   border-top: 1px solid var(--main-gray);
+  color: lightgray;
 
   i {
     font-size: 1.5rem;
@@ -57,6 +58,7 @@ const MainButtonWrapper = styled.div`
   border-top-right-radius: 2rem;
   border-top-left-radius: 2rem;
   background-color: var(--main-green);
+  color: var(--main-gray);
 
   span {
     font-size: 1.5rem;
@@ -86,7 +88,11 @@ export const FooterLayout = () => {
       {buttons?.map((button, idx) => {
         if (button.title === 'WIT')
           return (
-            <MainButtonWrapper className={page === 'main' ? 'active' : ''} onClick={() => setPage(button.value)}>
+            <MainButtonWrapper
+              key={idx}
+              className={page === 'main' ? 'active' : ''}
+              onClick={() => setPage(button.value)}
+            >
               <span>WIT</span>
             </MainButtonWrapper>
           );
