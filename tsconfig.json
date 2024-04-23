@@ -1,19 +1,38 @@
 {
   "compilerOptions": {
     "target": "es2020",
-    "lib": ["es7","dom", "dom.iterable", "esnext"],
+    "lib": [
+      "es7",
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "module": "esnext",
     "resolveJsonModule": true,
     "moduleResolution": "node",
     "baseUrl": "./",
     "paths": {
-      "app/*": ["src/app/*"],
-      "assets/*": ["public/assets/*"],
-      "shared/*": ["src/shared/*"],
-      "tests/*": ["tests/*"]
+      "app/*": [
+        "src/app/*"
+      ],
+      "assets/*": [
+        "public/assets/*"
+      ],
+      "shared/*": [
+        "src/shared/*"
+      ],
+      "tests/*": [
+        "tests/*"
+      ]
     },
-    "typeRoots": ["./node_modules/@types"],
-    "types": ["node"],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules"
+    ],
+    "types": [
+      "node",
+      "kakao.maps.d.ts"
+    ],
     "allowJs": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -22,6 +41,14 @@
     "jsx": "react",
     "outDir": "./dist"
   },
-  "include": ["src", "vite.config.js", "src/**/*.json"],
-  "exclude": ["node_modules", "build", "dist"]
+  "include": [
+    "src",
+    "vite.config.js",
+    "src/**/*.json"
+  ],
+  "exclude": [
+    "node_modules",
+    "build",
+    "dist"
+  ]
 }
