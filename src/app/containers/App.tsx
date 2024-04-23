@@ -27,6 +27,7 @@ export const App = () => {
           <Route path='/' element={<Navigate to='/main' />} />
           <Route path='/main' element={<WitMain />} />
           <Route path='/map' element={<WitMap />} />
+          <Route path='/*' element={<Navigate to='/main' />} />
         </Routes>
       </BrowserRouter>
     </AppPage>
