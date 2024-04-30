@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { FooterLayout } from 'app/components/layout/FooterLayout';
 import { ImageUpload } from 'app/containers/pages/main/upload/ImageUpload';
 import { MainSearch } from 'app/containers/pages/main/search/MainSearch';
+import { MainCategory } from 'app/containers/pages/main/category/MainCategory';
 
 const WitMainWrapper = styled.div`
   width: 100%;
@@ -16,7 +17,8 @@ export const WitMain = () => {
     <>
       <WitMainWrapper>
         <MainSearch />
-        <ImageUpload />
+        <MainCategory />
+        {/* <ImageUpload /> */}
       </WitMainWrapper>
       <FooterLayout />
     </>
