@@ -3,6 +3,10 @@
     {
       "source": "/(.*)",
       "destination": "/"
+    },
+    {
+      "source": "/tourApi",
+      "destination": "https://apis.data.go.kr/B551011/KorService1"
     }
   ]
 }
