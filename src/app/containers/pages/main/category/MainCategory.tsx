@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { categories } from 'app/containers/pages/main/category/categories';
 
 const CategoryWrapper = styled.div`
-  margin-top: 1rem;
   width: 90%;
   height: 12rem;
   display: grid;
@@ -44,9 +43,9 @@ export const MainCategory = () => {
 
   return (
     <CategoryWrapper>
-      {categories.map((category) => {
+      {categories.map((category, idx) => {
         return (
-          <CategoryButton onClick={() => openPage(category.value)}>
+          <CategoryButton onClick={() => openPage(category.value)} key={idx}>
             <i className={`fa-solid ${category.icon}`}></i>
             <span>{category.title}</span>
           </CategoryButton>

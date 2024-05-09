@@ -11,6 +11,7 @@ const ThemeWrapper = styled.article`
   height: 100vh;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 `;
 export const Theme = ({ children }: ThemeProps) => {
   const { theme } = useThemeStore();

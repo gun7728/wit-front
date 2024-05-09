@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { MainSearchResult } from 'app/containers/pages/main/search/MainSearchResultWrapper';
 
 const MainSearchWrapper = styled.div`
   padding: 0rem 1rem;
@@ -58,6 +59,7 @@ export const MainSearch = () => {
       </ButtonWrapper>
       <SearchInputWrapper>
         <SearchInput type={'search'} placeholder={'관광지 검색'} />
+        {/* <MainSearchResult /> */}
       </SearchInputWrapper>
     </MainSearchWrapper>
   );
