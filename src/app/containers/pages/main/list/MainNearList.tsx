@@ -58,8 +58,8 @@ const SlideTimer = styled.div`
   align-items: center;
 
   span {
-    width: 18%;
-    padding-left: 5%;
+    font-size: 0.725rem;
+    width: fit-content;
   }
 `;
 
