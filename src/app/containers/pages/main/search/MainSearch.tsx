@@ -1,18 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
-import { MainSearchResult } from 'app/containers/pages/main/search/MainSearchResultWrapper';
 
-const MainSearchWrapper = styled.div`
+interface MainSearchWrapperProps {
+  $change: boolean;
+}
+
+const MainSearchWrapper = styled.div<MainSearchWrapperProps>`
   padding: 0rem 1rem;
-  height: 6rem;
+  height: ${(props) => (props.$change ? '4rem' : '6rem')};
   width: 100%;
   box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.1);
   border-bottom-right-radius: 0.725rem;
   border-bottom-left-radius: 0.725rem;
+  background-color: white;
+  transition: all 0.2s;
+  z-index: 999;
 
+  position: fixed;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: end;
   align-items: center;
 `;
 
@@ -49,14 +56,25 @@ const SearchInput = styled.input`
   }
 `;
 
-export const MainSearch = () => {
+interface MainSearchData {
+  change: boolean;
+}
+
+interface MainSearchProps {
+  data: MainSearchData;
+}
+
+export const MainSearch = (props: MainSearchProps) => {
+  const { change } = props.data;
   return (
-    <MainSearchWrapper>
-      <ButtonWrapper>
-        <i className='fa-solid fa-bars'></i>
-        <span>WIT</span>
-        <i className='fa-solid fa-house'></i>
-      </ButtonWrapper>
+    <MainSearchWrapper $change={change}>
+      {change || (
+        <ButtonWrapper>
+          <i className='fa-solid fa-bars'></i>
+          <span>WIT</span>
+          <i className='fa-solid fa-house'></i>
+        </ButtonWrapper>
+      )}
       <SearchInputWrapper>
         <SearchInput type={'search'} placeholder={'관광지 검색'} />
         {/* <MainSearchResult /> */}

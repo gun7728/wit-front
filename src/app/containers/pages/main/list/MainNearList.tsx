@@ -1,146 +1,253 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { resultType } from '../../../../../common/apiType';
+import { SlideContent } from 'app/containers/pages/main/list/slide/SlideContent';
 
 const MainNearListWrapper = styled.div`
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 12rem;
-`;
-const SlideShow = styled.div`
-  padding-top: 3rem;
-  margin: 0 auto;
+  position: relative;
+  display: block;
+  height: 26rem;
   overflow: hidden;
-  width: 100%;
 `;
 
 interface SlideShowSliderProps {
   $index: number;
+  $isDragging: boolean;
 }
 
 const SlideShowSlider = styled.div<SlideShowSliderProps>`
   white-space: nowrap;
-  transition: ease 1000ms;
+  transition: ${(props) => (props.$isDragging ? 'none' : 'ease 1000ms')};
   transform: ${(props) => `translate3d(${-props.$index * 100}%,0,0)`};
 `;
 
-const Slide = styled.div`
-  display: inline-block;
-  height: 10rem;
+const SlideHeader = styled.div`
+  padding: 0 1rem 1rem 1rem;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  h2 {
+    color: var(--main-green);
+  }
 
   div {
-    color: black;
-    opacity: 1;
-    position: absolute;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 10rem;
 
-    h2 {
-      z-index: 3;
-      font-weight: bold;
-      color: black;
-      -webkit-text-stroke-color: white;
-      -webkit-text-stroke-width: 1px;
+    button {
+      background-color: transparent;
+      border: none;
+      width: 100%;
+
+      i {
+        font-size: 1.25rem;
+        color: var(--main-green);
+      }
     }
   }
+`;
 
-  img {
-    height: 10rem;
-    width: 100%;
-    opacity: 0.5;
+const SlideTimer = styled.div`
+  width: 100%;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  span {
+    width: 18%;
+    padding-left: 5%;
   }
 `;
-const SlideshowDots = styled.div`
-  text-align: center;
+
+const ProgressBarContainer = styled.div`
   position: relative;
-  top: -3rem;
+  width: 80%;
+  height: 0.25rem;
+  background-color: #e0e0e0;
+  border-radius: 0.25rem;
+  overflow: hidden;
 `;
 
-interface SlideshowDotProps {
-  $active: boolean;
-}
-
-const SlideshowDot = styled.div<SlideshowDotProps>`
-  display: inline-block;
-  height: 1rem;
-  width: 1rem;
-  border-radius: 50%;
-  cursor: pointer;
-  margin: 15px 7px;
-  background-color: ${(props) => (props.$active ? '#6a0dad' : '#c4c4c4')};
+const ProgressBar = styled.div<{ $progress: number }>`
+  position: absolute;
+  width: ${(props) => props.$progress}%;
+  height: 100%;
+  background-color: var(--main-green);
+  transition: width 0.1s linear;
 `;
-const delay = 2500;
+
+const delay = 10000; // delay in milliseconds
 
 export const MainNearList = () => {
-  const [index, setIndex] = React.useState(0);
-  const [itmes, setItems] = useState<resultType[] | null>(null);
-  const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [index, setIndex] = useState(0);
+  const [items, setItems] = useState<resultType[]>([]);
+  const [progress, setProgress] = useState(0);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const progressIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const isDraggingRef = useRef(false);
+  const startPosRef = useRef(0);
 
-  function resetTimeout() {
+  const resetTimeout = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
-  }
-
-  React.useEffect(() => {
-    if (!itmes) return;
-    resetTimeout();
-    timeoutRef.current = setTimeout(
-      () => setIndex((prevIndex) => (prevIndex === itmes.length - 1 ? 0 : prevIndex + 1)),
-      delay,
-    );
-
-    return () => {
-      resetTimeout();
-    };
-  }, [index, itmes]);
-
-  const getData = async () => {
-    axios
-      .get(
-        `/tourApi/locationBasedList1?serviceKey=${import.meta.env.VITE_TOUR_API_ECD_KEY}&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=A&mapX=126.981611&mapY=37.568477&radius=1000&contentTypeId=15`,
-      )
-      .then((res) => {
-        const list = res.data.response.body.items.item;
-        console.log(list);
-        setItems(list);
-      });
   };
+
+  const resetProgressInterval = () => {
+    if (progressIntervalRef.current) {
+      clearInterval(progressIntervalRef.current);
+    }
+  };
+
+  const setAutoSlide = () => {
+    resetTimeout();
+    resetProgressInterval();
+    setProgress(0);
+
+    timeoutRef.current = setTimeout(() => {
+      setIndex((prevIndex) => (prevIndex === items.length - 1 ? 0 : prevIndex + 1));
+    }, delay);
+
+    progressIntervalRef.current = setInterval(() => {
+      setProgress((prevProgress) => {
+        const newProgress = prevProgress + 100 / (delay / 2 / 100);
+        if (newProgress >= 100) {
+          setIndex((prevIndex) => (prevIndex === items.length - 1 ? 0 : prevIndex + 1));
+          resetProgressInterval();
+        }
+        return newProgress;
+      });
+    }, 100);
+  };
+
   useEffect(() => {
     getData();
   }, []);
+
+  useEffect(() => {
+    if (items.length > 0) {
+      setAutoSlide();
+    }
+  }, [index, items]);
+
+  useEffect(() => {
+    if (!isDraggingRef.current) {
+      setAutoSlide();
+    }
+    return () => {
+      resetTimeout();
+      resetProgressInterval();
+    };
+  }, [isDraggingRef.current]);
+
+  const getData = async () => {
+    try {
+      const res = await axios.get(
+        `/tourApi/locationBasedList1?serviceKey=${import.meta.env.VITE_TOUR_API_ECD_KEY}&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=A&mapX=126.981611&mapY=37.568477&radius=1000&contentTypeId=15`,
+      );
+      const list = res.data.response.body.items.item;
+      setItems(list);
+    } catch (error) {
+      console.error('Error fetching data', error);
+    }
+  };
+
+  const handleMouseDown = (event: React.MouseEvent) => {
+    isDraggingRef.current = true;
+    startPosRef.current = event.clientX;
+    resetTimeout();
+    resetProgressInterval();
+  };
+
+  const handleMouseMove = (event: React.MouseEvent) => {
+    if (!isDraggingRef.current) return;
+    const currentPos = event.clientX;
+    const diff = startPosRef.current - currentPos;
+
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) {
+        setIndex((prevIndex) => (prevIndex === items.length - 1 ? 0 : prevIndex + 1));
+      } else {
+        setIndex((prevIndex) => (prevIndex === 0 ? items.length - 1 : prevIndex - 1));
+      }
+      isDraggingRef.current = false;
+      setAutoSlide();
+    }
+  };
+
+  const handleMouseUp = () => {
+    isDraggingRef.current = false;
+    setAutoSlide();
+  };
+
+  const handleTouchStart = (event: React.TouchEvent) => {
+    isDraggingRef.current = true;
+    startPosRef.current = event.touches[0].clientX;
+    resetTimeout();
+    resetProgressInterval();
+  };
+
+  const handleTouchMove = (event: React.TouchEvent) => {
+    if (!isDraggingRef.current) return;
+    const currentPos = event.touches[0].clientX;
+    const diff = startPosRef.current - currentPos;
+
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) {
+        setIndex((prevIndex) => (prevIndex === items.length - 1 ? 0 : prevIndex + 1));
+      } else {
+        setIndex((prevIndex) => (prevIndex === 0 ? items.length - 1 : prevIndex - 1));
+      }
+      isDraggingRef.current = false;
+      setAutoSlide();
+    }
+  };
+
+  const handleTouchEnd = () => {
+    isDraggingRef.current = false;
+    setAutoSlide();
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
   return (
-    <MainNearListWrapper>
-      <SlideShow>
-        <SlideShowSlider $index={index}>
-          {itmes?.map((item, index) => (
-            <Slide key={index}>
-              <div>
-                <h2>{item.title}</h2>
-              </div>
-              <img src={item.firstimage} />
-            </Slide>
-          ))}
-        </SlideShowSlider>
-        <SlideshowDots>
-          {itmes?.map((dot, idx) => (
-            <SlideshowDot
-              $active={index === idx}
-              key={idx}
-              onClick={() => {
-                setIndex(idx);
-              }}
-            ></SlideshowDot>
-          ))}
-        </SlideshowDots>
-      </SlideShow>
+    <MainNearListWrapper
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
+      <SlideHeader>
+        <h2>내 주변 여행지</h2>
+        <div>
+          <button onClick={() => setIndex(index > 0 ? index - 1 : items.length - 1)}>
+            <i className='fa-solid fa-circle-chevron-left'></i>
+          </button>
+          <button onClick={() => setIndex(index < items.length - 1 ? index + 1 : 0)}>
+            <i className='fa-solid fa-circle-chevron-right'></i>
+          </button>
+        </div>
+      </SlideHeader>
+      <SlideShowSlider $index={index} $isDragging={isDraggingRef.current}>
+        {items?.map((item, idx) => <SlideContent data={{ content: item }} key={idx} />)}
+      </SlideShowSlider>
+      <SlideTimer>
+        <ProgressBarContainer>
+          <ProgressBar $progress={progress} />
+        </ProgressBarContainer>
+        <span>
+          {index + 1} / {items.length}
+        </span>
+      </SlideTimer>
     </MainNearListWrapper>
   );
 };

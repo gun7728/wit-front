@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { categories } from 'app/containers/pages/main/category/categories';
 
 const CategoryWrapper = styled.div`
-  width: 90%;
+  width: 100%;
+  padding: 0 5%;
   height: 12rem;
   display: grid;
   justify-content: center;

@@ -8,11 +8,9 @@ type ThemeProps = {
 
 const ThemeWrapper = styled.article`
   width: 100%;
-  //height: 100vh;
+  height: 100%;
   margin: 0;
   padding: 0;
-  overflow-y: scroll;
-  overflow-x: hidden;
 `;
 export const Theme = ({ children }: ThemeProps) => {
   const { theme } = useThemeStore();
