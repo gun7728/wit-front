@@ -5,6 +5,7 @@ import { resultType } from '../../../../../common/apiType';
 import { SlideContent } from 'app/containers/pages/main/list/slide/SlideContent';
 
 const MainNearListWrapper = styled.div`
+  top: -1rem;
   width: 100%;
   position: relative;
   display: block;
@@ -24,13 +25,19 @@ const SlideShowSlider = styled.div<SlideShowSliderProps>`
 `;
 
 const SlideHeader = styled.div`
-  padding: 0 1rem 1rem 1rem;
+  position: relative;
+  z-index: 999;
+  padding: 0 1rem 0 1rem;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-top-right-radius: 0.725rem;
+  border-top-left-radius: 0.725rem;
+  background-color: white;
 
   h2 {
+    padding: 0.5rem 0;
     color: var(--main-green);
   }
 

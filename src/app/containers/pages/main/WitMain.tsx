@@ -15,7 +15,7 @@ const WitMainWrapper = styled.div<WitMainWrapperProps>`
   height: ${(props) => (props.$change ? 'calc(100% - 6rem)' : 'calc(100% - 8rem)')};
   overflow-y: scroll;
   position: fixed;
-  top: ${(props) => (props.$change ? '2rem' : '4rem')};
+  top: ${(props) => (props.$change ? '0rem' : '1rem')};
   padding-top: ${(props) => (props.$change ? '6rem' : '4rem')};
 `;
 export const WitMain = () => {
@@ -31,12 +31,8 @@ export const WitMain = () => {
     <>
       <MainSearch data={{ change: changeSearch }} />
       <WitMainWrapper onScroll={detectScroll} $change={changeSearch}>
+        <MainCategory />
         <MainNearList />
-        <MainCategory />
-        <MainCategory />
-        <MainCategory />
-        <MainCategory />
-        <MainCategory />
         {/* <ImageUpload /> */}
       </WitMainWrapper>
       <FooterLayout />

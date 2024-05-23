@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { resultType } from '../../../../../../common/apiType';
+import { cateogryType } from '../../../../../../common/cateogryType';
 
 const Content = styled.div`
   width: 100%;
@@ -20,6 +21,11 @@ const Content = styled.div`
     align-self: start;
     font-size: 15px;
     border-radius: 0.725rem;
+    font-weight: bold;
+
+    small {
+      color: var(--main-yellow);
+    }
   }
 `;
 
@@ -49,7 +55,9 @@ export const SlideContent = (props: ContentProps) => {
     <Slide>
       <Content>
         <Image src={content.firstimage} />
-        <span>{content.title}</span>
+        <span>
+          {content.title} <small>{cateogryType[content.cat1]}</small>
+        </span>
       </Content>
     </Slide>
   );
