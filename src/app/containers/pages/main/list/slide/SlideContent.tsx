@@ -12,7 +12,7 @@ const Content = styled.div`
   align-items: center;
 
   span {
-    left: 2rem;
+    left: 1rem;
     bottom: 1rem;
     position: relative;
     background-color: var(--main-green);

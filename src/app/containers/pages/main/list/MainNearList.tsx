@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { resultType } from '../../../../../common/apiType';
 import { SlideContent } from 'app/containers/pages/main/list/slide/SlideContent';
+import { useCategoryStore } from '../../../../../store/category';
+import { Loader } from 'app/components/common-ui/Loading';
 
 const MainNearListWrapper = styled.div`
   top: -1rem;
@@ -90,9 +92,13 @@ const ProgressBar = styled.div<{ $progress: number }>`
 const delay = 10000; // delay in milliseconds
 
 export const MainNearList = () => {
+  const { selectedCategory } = useCategoryStore();
+
   const [index, setIndex] = useState(0);
   const [items, setItems] = useState<resultType[]>([]);
   const [progress, setProgress] = useState(0);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const progressIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const isDraggingRef = useRef(false);
@@ -132,10 +138,6 @@ export const MainNearList = () => {
   };
 
   useEffect(() => {
-    getData();
-  }, []);
-
-  useEffect(() => {
     if (items.length > 0) {
       setAutoSlide();
     }
@@ -151,16 +153,37 @@ export const MainNearList = () => {
     };
   }, [isDraggingRef.current]);
 
-  const getData = async () => {
-    try {
-      const res = await axios.get(
-        `/tourApi/locationBasedList1?serviceKey=${import.meta.env.VITE_TOUR_API_ECD_KEY}&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=A&mapX=126.981611&mapY=37.568477&radius=1000&contentTypeId=15`,
-      );
-      const list = res.data.response.body.items.item;
-      setItems(list);
-    } catch (error) {
-      console.error('Error fetching data', error);
+  const getData = async (selectedCategory: string[] | null = null) => {
+    const url = `/tourApi/locationBasedList1?serviceKey=${import.meta.env.VITE_TOUR_API_ECD_KEY}&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=A&mapX=126.981611&mapY=37.568477&radius=1000`;
+
+    progressIntervalRef.current && clearInterval(progressIntervalRef.current);
+    setProgress(0);
+    if (selectedCategory) {
+      setLoading(true);
+      Promise.all(
+        selectedCategory.map(async (category) => {
+          // HTTP 요청
+          return await axios.get(url + '&contentTypeId=' + category);
+        }),
+      ).then((res) => {
+        let newList: resultType[] = [];
+        res.map((resut) => {
+          const list = resut.data.response.body.items.item;
+          newList = [...newList, ...list];
+        });
+        newList.sort(() => Math.random() - 0.5);
+        setItems(newList);
+        setLoading(false);
+      });
+    } else {
+      setLoading(true);
+      await axios.get(url).then((res) => {
+        const list = res.data.response.body.items.item;
+        setItems(list);
+        setLoading(false);
+      });
     }
+    setIndex(0);
   };
 
   const handleMouseDown = (event: React.MouseEvent) => {
@@ -220,32 +243,51 @@ export const MainNearList = () => {
   };
 
   useEffect(() => {
-    getData();
-  }, []);
+    if (selectedCategory.length == 0) {
+      getData();
+    } else {
+      getData(selectedCategory);
+    }
+  }, [selectedCategory]);
 
   return (
     <MainNearListWrapper
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
+      onMouseDown={!loading ? handleMouseDown : undefined}
+      onMouseMove={!loading ? handleMouseMove : undefined}
+      onMouseUp={!loading ? handleMouseUp : undefined}
+      onMouseLeave={!loading ? handleMouseUp : undefined}
+      onTouchStart={!loading ? handleTouchStart : undefined}
+      onTouchMove={!loading ? handleTouchMove : undefined}
+      onTouchEnd={!loading ? handleTouchEnd : undefined}
     >
       <SlideHeader>
         <h2>내 주변 여행지</h2>
         <div>
-          <button onClick={() => setIndex(index > 0 ? index - 1 : items.length - 1)}>
+          <button onClick={() => loading || setIndex(index > 0 ? index - 1 : items.length - 1)}>
             <i className='fa-solid fa-circle-chevron-left'></i>
           </button>
-          <button onClick={() => setIndex(index < items.length - 1 ? index + 1 : 0)}>
+          <button onClick={() => loading || setIndex(index < items.length - 1 ? index + 1 : 0)}>
             <i className='fa-solid fa-circle-chevron-right'></i>
           </button>
         </div>
       </SlideHeader>
-      <SlideShowSlider $index={index} $isDragging={isDraggingRef.current}>
-        {items?.map((item, idx) => <SlideContent data={{ content: item }} key={idx} />)}
+
+      <SlideShowSlider $index={index} $isDragging={isDraggingRef.current} key={items?.length}>
+        {!loading ? (
+          items?.map((item, idx) => <SlideContent data={{ content: item }} key={idx} />)
+        ) : (
+          <div
+            style={{
+              width: '100 %',
+              height: '20rem',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Loader />
+          </div>
+        )}
       </SlideShowSlider>
       <SlideTimer>
         <ProgressBarContainer>

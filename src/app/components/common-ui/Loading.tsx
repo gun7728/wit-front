@@ -17,9 +17,9 @@ const SpinnerWrapper = styled.div<SpinnerWrapperProps>`
   height: 100vh;
 `;
 
-const Loader = styled.div`
+export const Loader = styled.div`
   border: 10px solid #f3f3f3;
-  border-top: 10px solid black;
+  border-top: 10px solid var(--main-green);
   border-radius: 50%;
   width: 80px;
   height: 80px;

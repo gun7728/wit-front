@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { categories } from 'app/containers/pages/main/category/categories';
+import { useCategoryStore } from '../../../../../store/category';
 
 const CategoryWrapper = styled.div`
   width: 100%;
@@ -24,8 +25,13 @@ const CategoryTitle = styled.div`
   flex-direction: column;
   color: var(--main-gray);
 
-  h3 {
+  h2 {
+    text-shadow: 2px 0 rgba(0, 0, 0, 0.1);
     font-weight: bold;
+  }
+
+  span {
+    color: var(--main-yellow);
   }
 `;
 
@@ -48,7 +54,11 @@ const Categories = styled.div`
   padding: 0 0.5rem;
 `;
 
-const CategoryButton = styled.div`
+interface CategoryButtonProps {
+  $selected: boolean;
+}
+
+const CategoryButton = styled.div<CategoryButtonProps>`
   left: 0;
   width: 100%;
   display: flex;
@@ -59,9 +69,9 @@ const CategoryButton = styled.div`
   i {
     align-content: center;
     text-align: center;
-    background-color: var(--main-gray);
+    background-color: ${(props) => (props.$selected ? ' rgba(var(--main-gray-custom),1);' : ' rgba(var(--main-gray-custom), 0.5);')}
     font-size: 2rem;
-    color: var(--main-green);
+    color: ${(props) => (props.$selected ? ' rgba(var(--main-green-custom),1);' : ' rgba(var(--main-green-custom), 0.5);')}
     padding: 0.8rem;
     width: 4rem;
     height: 4rem;
@@ -79,20 +89,29 @@ const CategoryButton = styled.div`
   }
 `;
 export const MainCategory = () => {
+  const { setSelectedCategory, selectedCategory } = useCategoryStore();
   const openPage = (value: string) => {
-    console.log(value);
+    if (selectedCategory.includes(value)) {
+      setSelectedCategory(selectedCategory.filter((cat) => cat !== value));
+    } else {
+      setSelectedCategory([...selectedCategory, value]);
+    }
   };
 
   return (
     <CategoryWrapper>
       <CategoryTitle>
-        <h3>카테고리 선택</h3>
-        <span>뭘 적을까</span>
+        <h2>Category</h2>
+        <span>나만의 카테고리를 조합해 보세요</span>
       </CategoryTitle>
       <Categories>
         {categories.map((category, idx) => {
           return (
-            <CategoryButton onClick={() => openPage(category.value)} key={idx}>
+            <CategoryButton
+              $selected={selectedCategory.includes(category.value)}
+              onClick={() => openPage(category.value)}
+              key={idx}
+            >
               <i className={`fa-solid ${category.icon}`}></i>
               <span>{category.title}</span>
             </CategoryButton>
