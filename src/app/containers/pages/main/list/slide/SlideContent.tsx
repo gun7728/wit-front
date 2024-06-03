@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { resultType } from '../../../../../../common/apiType';
 import { cateogryType } from '../../../../../../common/cateogryType';
@@ -41,6 +41,14 @@ const Image = styled.img`
   max-width: 90%;
 `;
 
+const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 18rem;
+  max-width: 90%;
+`;
+
 interface ContentProps {
   data: ContentData;
 }
@@ -51,10 +59,18 @@ interface ContentData {
 
 export const SlideContent = (props: ContentProps) => {
   const { content } = props.data;
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  useEffect(() => {
+    setImageLoaded(false); // Reset imageLoaded when the image source changes
+  }, [content.firstimage]);
+
   return (
     <Slide>
       <Content>
-        <Image src={content.firstimage} />
+        <img src={content.firstimage} style={{ display: 'none' }} onLoad={() => setImageLoaded(true)} alt='' />
+        {imageLoaded ? <Image src={content.firstimage} /> : <Loading>Image Loading...</Loading>}
+        {/* <Image src={content.firstimage} /> */}
         <span>
           {content.title} <small>{cateogryType[content.cat1]}</small>
         </span>

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useThemeStore } from '../../../store/theme';
 import styled from 'styled-components';
 
 const HeaderWrapper = styled.div`
@@ -55,8 +54,6 @@ const ButtonWrapper = styled.div`
   }
 `;
 export const SearchLayout = () => {
-  const { theme, setTheme } = useThemeStore();
-
   return (
     <HeaderWrapper>
       <SearchWrapper>
