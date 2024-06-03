@@ -12,7 +12,7 @@ const Content = styled.div`
   align-items: center;
 
   span {
-    left: 1rem;
+    left: 2rem;
     bottom: 1rem;
     position: relative;
     background-color: var(--main-green);
@@ -39,6 +39,7 @@ const Slide = styled.div`
 const Image = styled.img`
   height: 18rem;
   max-width: 90%;
+  border-radius: 0.725rem;
 `;
 
 const Loading = styled.div`

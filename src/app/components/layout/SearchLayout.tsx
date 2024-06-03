@@ -22,7 +22,10 @@ const SearchWrapper = styled.div`
   box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.2);
 
   input {
+    padding-left: 1rem;
+    height: 100%;
     width: 100% !important;
+    border: none;
     border-radius: 0.725rem !important;
   }
 

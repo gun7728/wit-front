@@ -29,7 +29,7 @@ const SlideShowSlider = styled.div<SlideShowSliderProps>`
 const SlideHeader = styled.div`
   position: relative;
   z-index: 999;
-  padding: 0 1rem 0 1rem;
+  padding: 0 5% 0 5%;
   width: 100%;
   display: flex;
   align-items: center;
@@ -39,7 +39,7 @@ const SlideHeader = styled.div`
   background-color: white;
 
   h2 {
-    padding: 0.5rem 0;
+    padding: 1rem 0;
     color: var(--main-green);
   }
 

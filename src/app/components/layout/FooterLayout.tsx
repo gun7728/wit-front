@@ -25,7 +25,7 @@ const FooterWrapper = styled.div`
 `;
 
 const FooterButton = styled.div`
-  width: 20%;
+  width: 23%;
   height: 3.25rem;
   display: flex;
   flex-direction: column;
@@ -60,15 +60,18 @@ const MainButtonWrapper = styled.div`
   background-color: var(--main-green);
   color: var(--main-gray);
 
-  span {
-    font-size: 1.5rem;
+  img {
+    width: 100%;
+    height: fit-content;
+    scale: 70%;
+    filter: drop-shadow(0px 999999px 0 white);
+    transform: translateY(-999999px);
   }
 
   &.active {
     color: var(--main-yellow) !important;
   }
 `;
-
 const buttons = [
   { title: '지도', value: 'map', icon: 'fa-map' },
   { title: '내주변', value: 'near', icon: 'fa-flag' },
@@ -93,7 +96,9 @@ export const FooterLayout = () => {
               className={page === 'main' ? 'active' : ''}
               onClick={() => setPage(button.value)}
             >
-              <span>WIT</span>
+              <span>
+                <img src={'/search.png'} alt={'search'} />
+              </span>
             </MainButtonWrapper>
           );
         else

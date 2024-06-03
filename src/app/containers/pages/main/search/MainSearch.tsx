@@ -25,7 +25,7 @@ const MainSearchWrapper = styled.div<MainSearchWrapperProps>`
 
 const ButtonWrapper = styled.div`
   width: 95%;
-  height: 3rem;
+  height: 4rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -38,7 +38,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const SearchInputWrapper = styled.div`
-  height: 3rem;
+  height: 4rem;
   width: 100%;
 `;
 

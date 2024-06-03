@@ -15,11 +15,12 @@ const CategoryWrapper = styled.div`
   margin-bottom: -1rem;
 `;
 const CategoryTitle = styled.div`
-  padding-top: 1rem;
+  padding-top: 1.5rem;
   padding-left: 1rem;
   width: 100%;
-  height: 3rem;
+  height: 4rem;
   display: flex;
+  gap: 0.25rem;
   justify-content: center;
   align-items: start;
   flex-direction: column;
