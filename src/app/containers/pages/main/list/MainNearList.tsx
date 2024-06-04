@@ -157,6 +157,7 @@ export const MainNearList = () => {
     const url = `/tourApi/locationBasedList1?serviceKey=${import.meta.env.VITE_TOUR_API_ECD_KEY}&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=A&mapX=126.981611&mapY=37.568477&radius=1000`;
 
     progressIntervalRef.current && clearInterval(progressIntervalRef.current);
+    setIndex(0);
     setProgress(0);
     if (selectedCategory) {
       setLoading(true);
@@ -183,7 +184,6 @@ export const MainNearList = () => {
         setLoading(false);
       });
     }
-    setIndex(0);
   };
 
   const handleMouseDown = (event: React.MouseEvent) => {
