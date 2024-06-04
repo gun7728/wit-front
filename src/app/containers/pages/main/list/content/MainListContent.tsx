@@ -18,7 +18,6 @@ const MainListContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  height: 4rem;
 
   div {
     height: 4rem;
@@ -42,14 +41,8 @@ export const MainListContent = (props: MainListContentProps) => {
     <MainListContentWrapper>
       {items.map((e, idx) => {
         return (
-          <div>
-            <span
-              key={idx}
-              ref={items.length - 4 === idx ? setTarget : null}
-              className={items.length - 4 === idx ? 'a' : 'b'}
-            >
-              {e.title}
-            </span>
+          <div key={idx} ref={items.length - 4 === idx ? setTarget : null}>
+            <span>{e.title}</span>
           </div>
         );
       })}

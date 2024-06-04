@@ -93,7 +93,7 @@ export const WitMain = () => {
       <MainSearch data={{ change: changeSearch }} />
       <WitMainWrapper onScroll={detectScroll} $change={changeSearch}>
         <MainCategory data={{ change: changeSearch }} />
-        <MainNearList data={{ items, loading }} />
+        <MainNearList data={{ items: items?.slice(0, 10), loading }} />
         <MainListContent data={{ items, moreLoad, setMoreLoad }} />
       </WitMainWrapper>
       <FooterLayout />
