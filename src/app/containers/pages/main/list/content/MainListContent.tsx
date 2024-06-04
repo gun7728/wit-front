@@ -12,7 +12,6 @@ interface MainListContentData {
   setMoreLoad: React.Dispatch<SetStateAction<boolean>>;
 }
 
-const MoreLoadDiv = styled.div``;
 const MainListContentWrapper = styled.div`
   width: 100%;
   display: flex;

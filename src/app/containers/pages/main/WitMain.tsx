@@ -52,7 +52,8 @@ export const WitMain = () => {
     const url = `/tourApi/locationBasedList1?serviceKey=${import.meta.env.VITE_TOUR_API_ECD_KEY}&numOfRows=10&pageNo=${pageNum}&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=A&mapX=126.981611&mapY=37.568477&radius=1000`;
 
     if (selectedCategory) {
-      setLoading(true);
+      console.log(moreFlag);
+      !moreFlag && setLoading(true);
       Promise.all(
         selectedCategory.map(async (category) => {
           // HTTP 요청
@@ -70,7 +71,7 @@ export const WitMain = () => {
         setLoading(false);
       });
     } else {
-      setLoading(true);
+      !moreFlag && setLoading(true);
       await axios.get(url).then((res) => {
         const list = res.data.response.body.items.item;
         setItems(list);
@@ -94,7 +95,7 @@ export const WitMain = () => {
       <WitMainWrapper onScroll={detectScroll} $change={changeSearch}>
         <MainCategory data={{ change: changeSearch }} />
         <MainNearList data={{ items: items?.slice(0, 10), loading }} />
-        <MainListContent data={{ items, moreLoad, setMoreLoad }} />
+        {loading || <MainListContent data={{ items, moreLoad, setMoreLoad }} />}
       </WitMainWrapper>
       <FooterLayout />
     </>

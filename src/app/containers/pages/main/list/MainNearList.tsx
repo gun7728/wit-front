@@ -119,7 +119,7 @@ export const MainNearList = (props: MainNearListProps) => {
     } else {
       setAutoSlide();
     }
-  }, [loading]);
+  }, [loading, index]);
   const resetProgressInterval = () => {
     if (progressIntervalRef.current) {
       clearInterval(progressIntervalRef.current);
