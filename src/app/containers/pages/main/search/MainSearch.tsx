@@ -6,15 +6,15 @@ interface MainSearchWrapperProps {
 }
 
 const MainSearchWrapper = styled.div<MainSearchWrapperProps>`
-  padding: 0rem 1rem;
-  height: ${(props) => (props.$change ? '4rem' : '6rem')};
+  padding: 0 1rem;
+  height: ${(props) => (props.$change ? '4rem' : '7rem')};
   width: 100%;
   box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.1);
-  border-bottom-right-radius: 0.725rem;
-  border-bottom-left-radius: 0.725rem;
+  //border-bottom-right-radius: 0.725rem;
+  //border-bottom-left-radius: 0.725rem;
   background-color: white;
-  transition: all 0.2s;
-  z-index: 999;
+  transition: all 0.5s;
+  z-index: 7;
 
   position: fixed;
   display: flex;
@@ -38,7 +38,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const SearchInputWrapper = styled.div`
-  height: 4rem;
+  height: 3rem;
   width: 100%;
 `;
 

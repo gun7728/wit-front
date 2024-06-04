@@ -3,22 +3,28 @@ import styled from 'styled-components';
 import { categories } from 'app/containers/pages/main/category/categories';
 import { useCategoryStore } from '../../../../../store/category';
 
-const CategoryWrapper = styled.div`
+interface CategoryWrapperProps {
+  $change: boolean;
+}
+
+const CategoryWrapper = styled.div<CategoryWrapperProps>`
   width: 100%;
-  padding-bottom: 1rem;
-  height: 14rem;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   background-color: var(--main-green);
-  margin-bottom: -1rem;
+  position: ${(props) => (props.$change ? 'fixed' : '')};
+  height: ${(props) => (props.$change ? '7rem' : '15rem')};
+  top: 0;
+  z-index: 6;
 `;
+
 const CategoryTitle = styled.div`
-  padding-top: 1.5rem;
+  padding-top: 4rem;
   padding-left: 1rem;
   width: 100%;
-  height: 4rem;
+  height: 6rem;
   display: flex;
   gap: 0.25rem;
   justify-content: center;
@@ -36,7 +42,7 @@ const CategoryTitle = styled.div`
   }
 `;
 
-const Categories = styled.div`
+const Categories = styled.div<CategoryWrapperProps>`
   overflow-x: scroll;
 
   -ms-overflow-style: none; /* IE and Edge */
@@ -49,7 +55,7 @@ const Categories = styled.div`
   width: 100%;
   height: 8rem;
   display: flex;
-  gap: 2rem;
+  gap: ${(props) => (props.$change ? '1rem' : '2rem')};
   align-items: center;
   justify-content: start;
   padding: 0 0.5rem;
@@ -89,8 +95,45 @@ const CategoryButton = styled.div<CategoryButtonProps>`
     color: var(--main-gray);
   }
 `;
-export const MainCategory = () => {
+
+const CategorySimpleButton = styled.div<CategoryButtonProps>`
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  top: 2rem;
+  position: relative;
+
+  span {
+    align-content: center;
+    text-align: center;
+    color: ${(props) => (props.$selected ? ' rgba(var(--main-gray-custom),1);' : ' rgba(var(--main-gray-custom), 0.5);')}
+    width: 6rem;
+    height: 2.5rem;
+
+    border-bottom: ${(props) => (props.$selected ? '0.125rem solid white;' : 'none;')}
+
+    font-size: 1rem;
+    font-weight: 400;
+    font-style: normal;
+    white-space: nowrap;
+  }
+`;
+
+interface MainCategoryProps {
+  data: MainCategoryData;
+}
+
+interface MainCategoryData {
+  change: boolean;
+}
+
+export const MainCategory = (props: MainCategoryProps) => {
   const { setSelectedCategory, selectedCategory } = useCategoryStore();
+  const { change } = props.data;
+
   const openPage = (value: string) => {
     if (selectedCategory.includes(value)) {
       setSelectedCategory(selectedCategory.filter((cat) => cat !== value));
@@ -100,23 +143,36 @@ export const MainCategory = () => {
   };
 
   return (
-    <CategoryWrapper>
-      <CategoryTitle>
-        <h2>Category</h2>
-        <span>나만의 카테고리를 조합해 보세요</span>
-      </CategoryTitle>
-      <Categories>
+    <CategoryWrapper $change={change}>
+      {change || (
+        <CategoryTitle>
+          <h2> Category </h2>
+          <span>나만의 카테고리를 조합해 보세요</span>
+        </CategoryTitle>
+      )}
+      <Categories $change={change}>
         {categories.map((category, idx) => {
-          return (
-            <CategoryButton
-              $selected={selectedCategory.includes(category.value)}
-              onClick={() => openPage(category.value)}
-              key={idx}
-            >
-              <i className={`fa-solid ${category.icon}`}></i>
-              <span>{category.title}</span>
-            </CategoryButton>
-          );
+          if (change)
+            return (
+              <CategorySimpleButton
+                $selected={selectedCategory.includes(category.value)}
+                onClick={() => openPage(category.value)}
+                key={idx}
+              >
+                <span>{category.title}</span>
+              </CategorySimpleButton>
+            );
+          else
+            return (
+              <CategoryButton
+                $selected={selectedCategory.includes(category.value)}
+                onClick={() => openPage(category.value)}
+                key={idx}
+              >
+                <i className={`fa-solid ${category.icon}`}></i>
+                <span>{category.title}</span>
+              </CategoryButton>
+            );
         })}
       </Categories>
     </CategoryWrapper>

@@ -28,7 +28,7 @@ const SlideShowSlider = styled.div<SlideShowSliderProps>`
 
 const SlideHeader = styled.div`
   position: relative;
-  z-index: 999;
+  z-index: 5;
   padding: 0 5% 0 5%;
   width: 100%;
   display: flex;

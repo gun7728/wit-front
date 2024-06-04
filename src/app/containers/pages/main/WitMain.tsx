@@ -12,16 +12,18 @@ interface WitMainWrapperProps {
 const WitMainWrapper = styled.div<WitMainWrapperProps>`
   width: 100%;
   gap: 1rem;
-  height: ${(props) => (props.$change ? 'calc(100% - 6rem)' : 'calc(100% - 8rem)')};
+  height: 100%;
+  // height: ${(props) => (props.$change ? 'calc(100% - 6rem)' : 'calc(100% - 8rem)')};
   overflow-y: scroll;
   position: fixed;
-  top: ${(props) => (props.$change ? '0rem' : '1rem')};
+  //top: ${(props) => (props.$change ? '0rem' : '1rem')};
   padding-top: ${(props) => (props.$change ? '6rem' : '4rem')};
 `;
 export const WitMain = () => {
   const [changeSearch, setChangeSearch] = useState<boolean>(false);
   const detectScroll = (e: React.UIEvent<HTMLElement>) => {
-    if (e.currentTarget.scrollTop) {
+    console.log(e.currentTarget.scrollTop);
+    if (e.currentTarget.scrollTop > 180) {
       setChangeSearch(true);
     } else {
       setChangeSearch(false);
@@ -31,7 +33,9 @@ export const WitMain = () => {
     <>
       <MainSearch data={{ change: changeSearch }} />
       <WitMainWrapper onScroll={detectScroll} $change={changeSearch}>
-        <MainCategory />
+        <MainCategory data={{ change: changeSearch }} />
+        <MainNearList />
+        <MainNearList />
         <MainNearList />
         {/* <ImageUpload /> */}
       </WitMainWrapper>

@@ -11,7 +11,7 @@ const HeaderWrapper = styled.div`
   left: calc((100% - 90%) / 2);
   align-items: center;
   border-bottom: 1px solid var(--main-gray);
-  z-index: 999;
+  z-index: 5;
 `;
 
 const SearchWrapper = styled.div`
