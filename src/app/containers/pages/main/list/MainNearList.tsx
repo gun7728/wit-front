@@ -91,35 +91,50 @@ const ProgressBar = styled.div<{ $progress: number }>`
 
 const delay = 10000; // delay in milliseconds
 
-export const MainNearList = () => {
-  const { selectedCategory } = useCategoryStore();
+interface MainNearListProps {
+  data: MainNearListData;
+}
 
+interface MainNearListData {
+  items: resultType[];
+  loading: boolean;
+}
+
+export const MainNearList = (props: MainNearListProps) => {
+  const { items, loading } = props.data;
   const [index, setIndex] = useState(0);
-  const [items, setItems] = useState<resultType[]>([]);
   const [progress, setProgress] = useState(0);
-  const [loading, setLoading] = useState<boolean>(false);
 
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const progressIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const isDraggingRef = useRef(false);
   const startPosRef = useRef(0);
 
+  useEffect(() => {
+    if (loading) {
+      resetProgressInterval();
+      resetTimeout();
+      setProgress(0);
+      setIndex(0);
+    } else {
+      setAutoSlide();
+    }
+  }, [loading]);
+  const resetProgressInterval = () => {
+    if (progressIntervalRef.current) {
+      clearInterval(progressIntervalRef.current);
+    }
+  };
   const resetTimeout = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
   };
 
-  const resetProgressInterval = () => {
-    if (progressIntervalRef.current) {
-      clearInterval(progressIntervalRef.current);
-    }
-  };
-
   const setAutoSlide = () => {
+    setProgress(0);
     resetTimeout();
     resetProgressInterval();
-    setProgress(0);
 
     timeoutRef.current = setTimeout(() => {
       setIndex((prevIndex) => (prevIndex === items.length - 1 ? 0 : prevIndex + 1));
@@ -138,12 +153,6 @@ export const MainNearList = () => {
   };
 
   useEffect(() => {
-    if (items.length > 0) {
-      setAutoSlide();
-    }
-  }, [index, items]);
-
-  useEffect(() => {
     if (!isDraggingRef.current) {
       setAutoSlide();
     }
@@ -152,39 +161,6 @@ export const MainNearList = () => {
       resetProgressInterval();
     };
   }, [isDraggingRef.current]);
-
-  const getData = async (selectedCategory: string[] | null = null) => {
-    const url = `/tourApi/locationBasedList1?serviceKey=${import.meta.env.VITE_TOUR_API_ECD_KEY}&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&listYN=Y&arrange=A&mapX=126.981611&mapY=37.568477&radius=1000`;
-
-    progressIntervalRef.current && clearInterval(progressIntervalRef.current);
-    setIndex(0);
-    setProgress(0);
-    if (selectedCategory) {
-      setLoading(true);
-      Promise.all(
-        selectedCategory.map(async (category) => {
-          // HTTP 요청
-          return await axios.get(url + '&contentTypeId=' + category);
-        }),
-      ).then((res) => {
-        let newList: resultType[] = [];
-        res.map((resut) => {
-          const list = resut.data.response.body.items.item;
-          newList = [...newList, ...list];
-        });
-        newList.sort(() => Math.random() - 0.5);
-        setItems(newList);
-        setLoading(false);
-      });
-    } else {
-      setLoading(true);
-      await axios.get(url).then((res) => {
-        const list = res.data.response.body.items.item;
-        setItems(list);
-        setLoading(false);
-      });
-    }
-  };
 
   const handleMouseDown = (event: React.MouseEvent) => {
     isDraggingRef.current = true;
@@ -242,14 +218,6 @@ export const MainNearList = () => {
     setAutoSlide();
   };
 
-  useEffect(() => {
-    if (selectedCategory.length == 0) {
-      getData();
-    } else {
-      getData(selectedCategory);
-    }
-  }, [selectedCategory]);
-
   return (
     <MainNearListWrapper
       onMouseDown={!loading ? handleMouseDown : undefined}
@@ -293,9 +261,13 @@ export const MainNearList = () => {
         <ProgressBarContainer>
           <ProgressBar $progress={progress} />
         </ProgressBarContainer>
-        <span>
-          {index + 1} / {items.length}
-        </span>
+        {loading ? (
+          <span>Loading...</span>
+        ) : (
+          <span>
+            {index + 1} / {items.length}
+          </span>
+        )}
       </SlideTimer>
     </MainNearListWrapper>
   );
