@@ -4,7 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "flask-dev": "FLASK_DEBUG=1 pip3 install -r requirements.txt && python3 -m flask --app src/api/index run -p 5328",
+    "next-dev": "next dev",
+    "dev": "yarn next-dev && yarn flask-dev",
     "build": "next build",
     "start": "next start"
   },
