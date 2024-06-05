@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "flask-dev": "FLASK_DEBUG=1 pip3 install -r requirements.txt && python3 -m flask --app src/api/index run -p 5328",
+    "dev": "concurrently \"npm run next-dev\" \"npm run flask-dev\"",
     "next-dev": "next dev",
-    "dev": "yarn next-dev && yarn flask-dev",
     "build": "next build",
     "start": "next start"
   },
@@ -52,6 +52,7 @@
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^8.2.2",
     "kakao.maps.d.ts": "^0.1.39",
     "typescript": "^5.2.2",
     "vite": "^5.2.0"
