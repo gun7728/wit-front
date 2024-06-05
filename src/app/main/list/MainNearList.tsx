@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { resultType } from '../../../common/apiType.ts';
 import { SlideContent } from './slide/SlideContent.tsx';
 import { Loader } from '../../components/common-ui/Loading.tsx';
+import axios from 'axios';
 
 const MainNearListWrapper = styled.div`
   top: -1rem;
@@ -128,6 +129,13 @@ export const MainNearList = (props: MainNearListProps) => {
       clearTimeout(timeoutRef.current);
     }
   };
+
+  const d = async () => {
+    await axios.get('/api/python').then(() => console.log('hi'));
+  };
+  useEffect(() => {
+    d();
+  }, []);
 
   const setAutoSlide = () => {
     setProgress(0);
