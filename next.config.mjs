@@ -5,7 +5,10 @@ const nextConfig = {
   rewrites: async () => ([
     {
       source: '/api/:path*',
-      destination: 'http://127.0.0.1:5328/:path*',
+      destination:
+        process.env.NODE_ENV === 'development'
+          ? 'http://127.0.0.1:5328/:path*'
+          : '/api/',
     }, {
       source: '/tourApi/:path*',
       destination: 'https://apis.data.go.kr/B551011/KorService1/:path*',
