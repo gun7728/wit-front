@@ -6,6 +6,15 @@ const nextConfig = {
     source: '/tourApi/:path*',
     destination: 'https://apis.data.go.kr/B551011/KorService1/:path*',
   }]),
+  redirects: async () => {
+    return [
+      {
+        source: '/',
+        destination: '/main',
+        permanent: true,
+      },
+    ];
+  },
 
   compiler: {
     styledComponents: true,
