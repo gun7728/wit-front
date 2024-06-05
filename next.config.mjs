@@ -7,8 +7,8 @@ const nextConfig = {
       source: '/api/:path*',
       destination:
         process.env.NODE_ENV === 'development'
-          ? 'http://127.0.0.1:8000/:path*'
-          : '/:path*',
+          ? 'http://127.0.0.1:8000/api/:path*'
+          : '/api/',
     }, {
       source: '/tourApi/:path*',
       destination: 'https://apis.data.go.kr/B551011/KorService1/:path*',

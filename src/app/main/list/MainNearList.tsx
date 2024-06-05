@@ -131,7 +131,8 @@ export const MainNearList = (props: MainNearListProps) => {
   };
 
   const d = async () => {
-    await axios.get('/api/python').then(() => console.log('hi'));
+    await axios.get('/api');
+    await axios.get('/api/python');
   };
   useEffect(() => {
     d();
