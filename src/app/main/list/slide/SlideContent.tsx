@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { resultType } from '../../../../../../common/apiType';
-import { cateogryType } from '../../../../../../common/cateogryType';
+import { resultType } from '../../../../common/apiType.ts';
+import { cateogryType } from '../../../../common/cateogryType.ts';
 
 const Content = styled.div`
   width: 100%;

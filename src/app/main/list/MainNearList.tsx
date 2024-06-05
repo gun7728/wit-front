@@ -1,10 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
-import { resultType } from '../../../../../common/apiType';
-import { SlideContent } from 'app/containers/pages/main/list/slide/SlideContent';
-import { useCategoryStore } from '../../../../../store/category';
-import { Loader } from 'app/components/common-ui/Loading';
+import { resultType } from '../../../common/apiType.ts';
+import { SlideContent } from './slide/SlideContent.tsx';
+import { Loader } from '../../components/common-ui/Loading.tsx';
 
 const MainNearListWrapper = styled.div`
   top: -1rem;

@@ -1,5 +1,5 @@
 import React, { SetStateAction, useEffect, useState } from 'react';
-import { resultType } from '../../../../../../common/apiType';
+import { resultType } from '../../../../common/apiType.ts';
 import styled from 'styled-components';
 
 interface MainListContentProps {

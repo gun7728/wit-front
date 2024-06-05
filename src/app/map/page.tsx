@@ -1,17 +1,18 @@
+'use client';
 import React from 'react';
-import { SearchLayout } from 'app/components/layout/SearchLayout';
 import { Map, useKakaoLoader } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
-import { FooterLayout } from 'app/components/layout/FooterLayout';
+import { SearchLayout } from '../components/layout/SearchLayout.tsx';
+import { FooterLayout } from '../components/layout/FooterLayout.tsx';
 
 const MapWrapper = styled.div`
   width: 100%;
   height: 100vh;
 `;
 
-export const WitMap = () => {
+export default function Page() {
   useKakaoLoader({
-    appkey: import.meta.env.VITE_KAKAO_MAP_KEY, // 발급 받은 APPKEY
+    appkey: process.env.NEXT_PUBLIC_KAKAO_MAP_KEY as string, // 발급 받은 APPKEY
   });
 
   return (
@@ -34,4 +35,4 @@ export const WitMap = () => {
       <FooterLayout />
     </>
   );
-};
+}

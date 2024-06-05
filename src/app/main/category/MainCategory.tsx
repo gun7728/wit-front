@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { categories } from 'app/containers/pages/main/category/categories';
-import { useCategoryStore } from '../../../../../store/category';
+import { useCategoryStore } from '../../../store/category.ts';
+import { categories } from './categories.ts';
 
 interface CategoryWrapperProps {
   $change: boolean;

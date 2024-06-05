@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { usePageStore } from '../../../store/page';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 
 const FooterWrapper = styled.div`
   width: 100%;
@@ -81,9 +81,11 @@ const buttons = [
 ];
 export const FooterLayout = () => {
   const { page, setPage } = usePageStore();
-  const navigate = useNavigate();
+
+  const router = useRouter();
+
   useEffect(() => {
-    navigate(`/${page}`);
+    router.push(`/${page}`);
   }, [page]);
 
   return (
