@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components';
-import { usePageStore } from '../../../store/page';
-import { useRouter } from 'next/navigation';
+import {usePageStore} from '../../../store/page';
+import {useRouter} from 'next/navigation';
 
 const FooterWrapper = styled.div`
   width: 100%;
@@ -64,8 +64,6 @@ const MainButtonWrapper = styled.div`
     width: 100%;
     height: fit-content;
     scale: 70%;
-    filter: drop-shadow(0px 999999px 0 white);
-    transform: translateY(-999999px);
   }
 
   &.active {
@@ -73,14 +71,14 @@ const MainButtonWrapper = styled.div`
   }
 `;
 const buttons = [
-  { title: '지도', value: 'map', icon: 'fa-map' },
-  { title: '내주변', value: 'near', icon: 'fa-flag' },
-  { title: 'WIT', value: 'main', icon: '' },
-  { title: '찜', value: 'like', icon: 'fa-bookmark' },
-  { title: '마이', value: 'my', icon: 'fa-user' },
+  {title: '지도', value: 'map', icon: 'fa-map'},
+  {title: '내주변', value: 'near', icon: 'fa-flag'},
+  {title: 'WIT', value: 'main', icon: ''},
+  {title: '찜', value: 'like', icon: 'fa-bookmark'},
+  {title: '마이', value: 'my', icon: 'fa-user'},
 ];
 export const FooterLayout = () => {
-  const { page, setPage } = usePageStore();
+  const {page, setPage} = usePageStore();
 
   const router = useRouter();
 
@@ -89,32 +87,32 @@ export const FooterLayout = () => {
   }, [page]);
 
   return (
-    <FooterWrapper>
-      {buttons?.map((button, idx) => {
-        if (button.title === 'WIT')
-          return (
-            <MainButtonWrapper
-              key={idx}
-              className={page === 'main' ? 'active' : ''}
-              onClick={() => setPage(button.value)}
-            >
-              <span>
-                <img src={'/search.png'} alt={'search'} />
-              </span>
-            </MainButtonWrapper>
-          );
-        else
-          return (
-            <FooterButton
-              key={idx}
-              className={`button-${idx} ${page === button.value ? 'active' : ''}`}
-              onClick={() => setPage(button.value)}
-            >
-              <i className={`${page === button.value ? 'fa-solid' : 'fa-regular'} ${button.icon}`}></i>
-              <span>{button.title}</span>
-            </FooterButton>
-          );
-      })}
-    </FooterWrapper>
+      <FooterWrapper>
+        {buttons?.map((button, idx) => {
+          if (button.title === 'WIT')
+            return (
+                <MainButtonWrapper
+                    key={idx}
+                    className={page === 'main' ? 'active' : ''}
+                    onClick={() => setPage(button.value)}
+                >
+                  <span>
+                    <img src={'/search.svg'} alt={'search'}/>
+                  </span>
+                </MainButtonWrapper>
+            );
+          else
+            return (
+                <FooterButton
+                    key={idx}
+                    className={`button-${idx} ${page === button.value ? 'active' : ''}`}
+                    onClick={() => setPage(button.value)}
+                >
+                  <i className={`${page === button.value ? 'fa-solid' : 'fa-regular'} ${button.icon}`}></i>
+                  <span>{button.title}</span>
+                </FooterButton>
+            );
+        })}
+      </FooterWrapper>
   );
 };
